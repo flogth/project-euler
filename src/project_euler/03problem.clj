@@ -3,21 +3,18 @@
 (defn divides [x n]
   (= 0 (mod n x)))
 
-(def n 600851475143)
-
 (defn add-to-multiple-set [coll n]
   (if (empty? coll)
     [n]
     (conj (remove #(divides n %) coll) n)))
 
-(def get-dividers
-
+(defn get-dividers [n]
   (loop [res []
          cur (int (Math/sqrt n))]
     (if (>= cur 2)
       (if (divides cur n)
-        (recur res (dec cur))
+        (recur (add-to-multiple-set res cur) (dec cur))
         (recur res (dec cur)))
       res)))
 
-(get-dividers)
+(apply max (get-dividers 600851475143))
