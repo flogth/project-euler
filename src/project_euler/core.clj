@@ -123,3 +123,10 @@
     first
     vals
     (reduce *)))
+
+;;Problem 10
+(defn problem10 []
+  (reduce + 2
+    (filter prime?
+     (take-while #(< % 2000000)
+       (iterate #(+ % 2) 3)))))
