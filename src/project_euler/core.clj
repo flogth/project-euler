@@ -110,16 +110,13 @@
             (bigger mul res)))))))
 
 ;;Problem 9
-;;TODO Awful performance -> rethink this!
 (defn problem9 []
   (->> (filter (fn [x] (= (square (:c x))
                         (+ (square (:a x))
                           (square (:b x)))))
-         (filter (fn [x] (= 1000 (reduce + (vals x))))
-           (for [a (range 998)
-                 b (range (inc a) 998)
-                 c (range (inc b) 998)]
-             {:a a :b b :c c})))
+           (for [a (range 1 998)
+                 b (range (inc a) 998)]
+             {:a a :b b :c (- 1000 a b)}))
     first
     vals
     (reduce *)))
