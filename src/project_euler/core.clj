@@ -1,6 +1,7 @@
 (ns project-euler.core
   (:gen-class)
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 ;; Utilities
 (defn divides [x n]
@@ -114,16 +115,30 @@
   (->> (filter (fn [x] (= (square (:c x))
                         (+ (square (:a x))
                           (square (:b x)))))
-           (for [a (range 1 998)
-                 b (range (inc a) 998)]
-             {:a a :b b :c (- 1000 a b)}))
+         (for [a (range 1 998)
+               b (range (inc a) 998)]
+           {:a a :b b :c (- 1000 a b)}))
     first
     vals
     (reduce *)))
 
+
 ;;Problem 10
-(defn problem10 []
+(defn problem10-old []
   (reduce + 2
     (filter prime?
-     (take-while #(< % 2000000)
-       (iterate #(+ % 2) 3)))))
+      (take-while #(< % 2000000)
+        (iterate #(+ % 2) 3)))))
+
+(defn eratosthenes-sieve
+  "Get set of all primes smaller than n"
+  [n]
+  (loop [nums (transient (set (cons 2 (range 3 (inc n) 2))))
+         c 3]
+    (if (> (square c) n)
+      (persistent! nums)
+      (recur (reduce disj! nums (range (square c) n c))
+        (inc c)))))
+
+(defn problem10 []
+  (reduce + (eratosthenes-sieve 2000000)))
