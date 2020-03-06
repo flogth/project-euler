@@ -8,6 +8,18 @@
 
 (def square #(* % %))
 
+(defn prime? [n]
+  (let [root (Math/sqrt n)]
+    (cond
+      (<= n 1) false
+      (= n 2) true
+      :else (loop [d 3]
+              (if (> d root)
+                true
+                (if (divides d n)
+                  false
+                  (recur (+ d 2))))))))
+
 ;; Problem 1
 (defn problem1 []
   (reduce + (filter (fn [x] (or (= 0 (mod x 5))
@@ -63,5 +75,12 @@
 ;;Problem 6
 (defn problem6 []
   (- (square (reduce + (range 101)))
-   (reduce + (map square
-               (range 101)))))
+    (reduce + (map square
+                (range 101)))))
+
+;;Problem 7
+;; Finds 10001th prime number, 10000 in code because 2 is omitted
+(defn problem7 []
+  (last (take 10000
+          (filter prime?
+            (iterate #(+ % 2) 3)))))
