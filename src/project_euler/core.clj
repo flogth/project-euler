@@ -29,7 +29,7 @@
 
 ;; Problem 2
 (defn fib
-  ([] (fib 1 1))
+  ([] (fib 0 1))
   ([a b] (lazy-seq
            (cons a (fib b
                      (+ a b))))))
@@ -38,6 +38,12 @@
          (fib))
     (filter even?)
     (reduce +)))
+
+;; Starting with 0, every third fibonacci number is even
+(defn problem2-alt []
+  (reduce +
+    (take-while #(< % 4000000)
+      (take-nth 3 (fib)))))
 
 ;; Problem 3
 (defn add-to-multiple-set [coll n]
@@ -113,8 +119,8 @@
 ;;Problem 9
 (defn problem9 []
   (->> (filter (fn [x] (= (square (:c x))
-                        (+ (square (:a x))
-                          (square (:b x)))))
+                         (+ (square (:a x))
+                           (square (:b x)))))
          (for [a (range 1 998)
                b (range (inc a) 998)]
            {:a a :b b :c (- 1000 a b)}))
