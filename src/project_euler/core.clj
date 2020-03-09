@@ -200,7 +200,10 @@
                          n)
                   (rest bits)))))
 
-(defn problem16 []
+(defn problem16-ridiculous []
   (sum (map #(int (/ (fast-mod-exp 2 1000 %) (/ % 10)))
          (take (int (/ 1000 (Math/log10 1000)))
            (iterate #(* 10 %) 10N)))))
+
+(defn problem16 []
+  (sum(first-digits-of (.pow (BigInteger/valueOf 2) 1000))))
