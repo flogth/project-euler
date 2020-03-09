@@ -1,4 +1,5 @@
 # project-euler
+![Clojure CI](https://github.com/rostrotkupferbraunbronze/project-euler/workflows/Clojure%20CI/badge.svg)
 
 My solutions for project euler
 
