@@ -32,7 +32,7 @@
 ;; Problem 1
 (defn problem1 []
   (reduce + (filter (fn [x] (or (= 0 (mod x 5))
-                              (= 0 (mod x 3))))
+                             (= 0 (mod x 3))))
               (range 1000))))
 
 ;; Problem 2
@@ -180,3 +180,27 @@
   (apply max-key second
     (pmap collatz-iter
       (range 3 1000000))))
+
+;; Problem 16
+;; Using fast modular exponentation, just for fun
+(defn bits-of [n]
+  (map #(Integer/parseInt (str %))
+    (str (Integer/toBinaryString n))))
+
+(defn fast-mod-exp
+  "Calculate x^exp mod n"
+  [x exp n]
+  (loop [b (mod x n)
+         bits (rest (bits-of exp))]
+    (cond (empty? bits) b
+          :else (recur (mod (*' b b
+                              (if (= 1 (first bits))
+                                x
+                                1))
+                         n)
+                  (rest bits)))))
+
+(defn problem16 []
+  (sum (map #(int (/ (fast-mod-exp 2 1000 %) (/ % 10)))
+         (take (int (/ 1000 (Math/log10 1000)))
+           (iterate #(* 10 %) 10N)))))
