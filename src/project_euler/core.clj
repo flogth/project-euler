@@ -157,6 +157,24 @@
 (defn problem10 []
   (reduce + (eratosthenes-sieve 2000000)))
 
+;;Problem 12
+(defn count-factors-of [n]
+  (loop [d 2
+         acc []]
+    (let [r (/ n d)]
+      (cond (<= (Math/sqrt n) d) (+ 2 (count acc))
+            (int? r) (recur (inc d) (conj acc d r))
+            :else (recur (inc d) acc)))))
+
+(def next-triangle-num (fn [[i s]] [(inc i) (+ i 1 s)]))
+
+(defn problem12 []
+  (-> (take-while (fn [[_ b]]
+                    (< (count-factors-of b) 500))
+        (iterate next-triangle-num [1 1]))
+    last
+    next-triangle-num))
+
 ;;Problem 13
 (defn problem13 []
   (reduce str
