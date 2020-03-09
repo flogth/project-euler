@@ -225,3 +225,8 @@
 
 (defn problem16 []
   (sum(first-digits-of (.pow (BigInteger/valueOf 2) 1000))))
+;;Problem 20
+(defn problem20 []
+  (-> (reduce * (BigInteger/valueOf 2) (range 3 101))
+    first-digits-of
+    sum))
