@@ -230,3 +230,18 @@
   (-> (reduce * (BigInteger/valueOf 2) (range 3 101))
     first-digits-of
     sum))
+
+;;Problem 22
+(defn name-score [name]
+  (sum (map #(- (int %) 64) name)))
+
+(defn problem22 []
+  (sum
+    (map-indexed
+      (fn [idx e]
+        (* (inc idx) (name-score e)))
+      (-> "src/project_euler/22_names.txt"
+        slurp
+        (str/replace #"\"" "")
+        (str/split #",")
+        sort))))
