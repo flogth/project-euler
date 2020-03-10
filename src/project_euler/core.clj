@@ -9,6 +9,8 @@
 
 (def square #(* % %))
 
+(defn sqrt [n] (int (Math/sqrt n)))
+
 (def sum #(reduce + %))
 
 (defn first-digits-of
@@ -245,3 +247,27 @@
         (str/replace #"\"" "")
         (str/split #",")
         sort))))
+
+;;Problem 23
+
+(defn factors-of [n]
+  (-> (for [x (range 2 (inc(sqrt n)))
+            :when (divides x n)]
+        [x (/ n x)])
+
+    (conj 1)
+    flatten
+    distinct))
+
+(def abundant?
+  (memoize
+    #(< % (sum (factors-of %)))))
+
+(defn sum-of-abundants? [n]
+  (not (not-any? #(and (abundant? %)
+                     (abundant? (- n %)))
+          (range 1 (inc (int (/ n 2)))))))
+
+(defn problem23 []
+  (sum (remove sum-of-abundants?
+         (range 1 28123))))
