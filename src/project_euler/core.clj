@@ -43,6 +43,7 @@
   ([a b] (lazy-seq
            (cons a (fib b
                      (+ a b))))))
+                     (+' a b))))))
 (defn problem2 []
   (->> (take-while #(< % 4000000)
          (fib))
@@ -286,3 +287,8 @@
         (recur (mod n (fac i))
           (dec i)
           (conj acc (quot n (fac i))))))))
+
+;;Problem 25
+(defn problem25 []
+  (count (take-while #(> 1000 (count (str %)))
+        (fib))))
