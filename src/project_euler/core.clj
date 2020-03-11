@@ -42,7 +42,6 @@
   ([] (fib 0 1))
   ([a b] (lazy-seq
            (cons a (fib b
-                     (+ a b))))))
                      (+' a b))))))
 (defn problem2 []
   (->> (take-while #(< % 4000000)
