@@ -271,3 +271,18 @@
 (defn problem23 []
   (sum (remove sum-of-abundants?
          (range 1 28123))))
+
+;;Problem 24
+(def fac
+  (memoize #(reduce *' (range 1 (inc %)))))
+
+(defn problem24 []
+  (reduce str
+    (loop [n 1000000
+           i 9
+           acc []]
+      (if (= 10 (count acc))
+        acc
+        (recur (mod n (fac i))
+          (dec i)
+          (conj acc (quot n (fac i))))))))
