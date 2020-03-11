@@ -1,8 +1,9 @@
 (ns project-euler.core
   (:gen-class)
   (:require [clojure.string :as str]
-            [clojure.set :as set]))
+            [taoensso.tufte :as tufte :refer (defnp p profiled profile)]))
 
+(tufte/add-basic-println-handler! {})
 ;; Utilities
 (defn divides [x n]
   (zero? (mod n x)))
@@ -266,8 +267,8 @@
 
 (defn sum-of-abundants? [n]
   (not (not-any? #(and (abundant? %)
-                     (abundant? (- n %)))
-          (range 1 (inc (int (/ n 2)))))))
+                    (abundant? (- n %)))
+         (range 1 (inc (int (/ n 2)))))))
 
 (defn problem23 []
   (sum (remove sum-of-abundants?
