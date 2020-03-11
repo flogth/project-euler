@@ -8,6 +8,7 @@
   (zero? (mod n x)))
 
 (def square #(* % %))
+(defn int-pow [n e](int (Math/pow n e)))
 
 (defn sqrt [n] (int (Math/sqrt n)))
 
@@ -290,4 +291,22 @@
 ;;Problem 25
 (defn problem25 []
   (count (take-while #(> 1000 (count (str %)))
-        (fib))))
+           (fib))))
+
+;;Problem 26
+;;https://oeis.org/A001913
+
+(defn primitive-root? [g n]
+  (= 1
+    (fast-mod-exp g (dec n) n)))
+
+(defn safe-prime [n primes]
+  (contains? primes (/ (dec n) 2)))
+
+(defn problem26 []
+  (let [primes (eratosthenes-sieve 1000)]
+    (first
+      (for [n (sort > primes)
+            :when (and (primitive-root? 10 n)
+                    (safe-prime n primes))]
+        n))))
