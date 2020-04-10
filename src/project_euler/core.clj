@@ -35,8 +35,8 @@
 
 ;; Problem 1
 (defn problem1 []
-  (reduce + (filter (fn [x] (or (= 0 (mod x 5))
-                             (= 0 (mod x 3))))
+  (reduce + (filter (fn [x] (or (zero? (mod x 5))
+                             (zero? (mod x 3))))
               (range 1000))))
 
 ;; Problem 2
@@ -81,11 +81,9 @@
     (str/reverse (str n))))
 
 (defn problem4 []
-  (apply max (->>
-               (for [x (range 100 1000)
-                     y (range 100 1000)]
-                 (* x y))
-               (filter palindrome?))))
+  (apply max (filter
+               palindrome?
+               (for [x (range 100 1000) y (range 100 1000)] (* x y)))))
 
 ;; Problem 5
 (defn problem5 []
