@@ -227,6 +227,38 @@
 
 (defn problem16 []
   (sum(first-digits-of (.pow (BigInteger/valueOf 2) 1000))))
+
+
+;;Problem 17
+(def numbers
+  {1 "one" 2 "two" 3 "three" 4 "four" 5 "five" 6 "six" 7 "seven" 8 "eight" 9 "nine"
+   10 "ten" 11 "eleven" 12 "twelve" 13 "thirteen" 14 "fourteen" 15 "fifteen" 16 "sixteen"
+   17 "seventeen" 18 "eighteen" 19 "nineteen" 20 "twenty" 30 "thirty" 40 "forty" 50 "fifty"
+   60 "sixty" 70 "seventy" 80 "eighty" 90 "ninety"})
+
+(defn- translate-num-xx [n]
+  (if-let [num (numbers n)]
+    num
+    (str (numbers (* 10 (int (/ n 10))))
+      (numbers (mod n 10)))))
+(defn- translate-num-xxx [n]
+  (str (numbers (int (/ n 100)))
+    "hundred"
+    (if-let [s (translate-num-xx (mod n 100))]
+      (str "and" s)
+      "")))
+
+(defn translate-num [n]
+  {:pre [(<= 1 n 1000)]}
+  (case (count (str n))
+    1 (numbers n)
+    2 (translate-num-xx n)
+    3 (translate-num-xxx n)
+    4 "onethousand"))
+
+(defn problem17 []
+  (reduce + (map (comp count translate-num) (range 1 1001))))
+
 ;;Problem 20
 (defn problem20 []
   (-> (reduce * (BigInteger/valueOf 2) (range 3 101))
