@@ -33,6 +33,15 @@
                   false
                   (recur (+ d 2))))))))
 
+(defn factors-of [n]
+  (-> (for [x (range 2 (inc(sqrt n)))
+            :when (divides x n)]
+        [x (/ n x)])
+
+    (conj 1)
+    flatten
+    distinct))
+
 ;; Problem 1
 (defn problem1 []
   (reduce + (filter (fn [x] (or (zero? (mod x 5))
@@ -265,6 +274,15 @@
     first-digits-of
     sum))
 
+;;Problem 21
+(def mem-divisor-sum (memoize (comp sum factors-of)))
+
+(defn problem21 []
+  (sum (filter (fn [n]
+                 (let [facsum (mem-divisor-sum n)]
+                   (and (not= n facsum) (= n (mem-divisor-sum facsum)))))
+         (range 1 10000))))
+
 ;;Problem 22
 (defn name-score [name]
   (sum (map #(- (int %) 64) name)))
@@ -281,16 +299,6 @@
         sort))))
 
 ;;Problem 23
-
-(defn factors-of [n]
-  (-> (for [x (range 2 (inc(sqrt n)))
-            :when (divides x n)]
-        [x (/ n x)])
-
-    (conj 1)
-    flatten
-    distinct))
-
 (def abundant?
   (memoize
     #(< % (sum (factors-of %)))))
