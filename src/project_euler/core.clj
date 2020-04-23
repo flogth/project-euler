@@ -112,9 +112,11 @@
             (iterate #(+ % 2) 3)))))
 
 ;;Problem 8
-(defn parse-digits [st]
-  (map #(Integer/parseInt %)
-    (str/split st #"")))
+(defn parse-digits
+  ([st] (parse-digits st #""))
+  ([st div]
+   (map #(Integer/parseInt %)
+     (str/split st div))))
 
 (defn bigger
   "Take two values and choose the bigger of the two"
@@ -268,6 +270,37 @@
 (defn problem17 []
   (reduce + (map (comp count translate-num) (range 1 1001))))
 
+;;Problem 18
+
+(defn- read-file-lines [path transf]
+  (mapv transf
+    (str/split (slurp path)  #"\n")))
+
+(defn- parse-triangle-file [path]
+  (let [lines (read-file-lines path
+                (comp vec
+                  #(parse-digits % #" ")))]
+    lines))
+
+(defn- parent-at [tree n]
+  (cond (<= 0 n (dec (count tree))) (nth tree n)
+        :else 0))
+
+(defn- max-parent [tree x]
+  (max (parent-at tree (dec x))
+    (parent-at tree x)))
+
+(defn problem18
+  ([] (problem18 (parse-triangle-file  "src/project_euler/18_triangle.txt")))
+  ([triangle]
+    (apply max
+      (reduce
+       (fn [acc line]
+         (map-indexed (fn [i x]
+                        (+ x (max-parent acc i)))
+           line))
+       []
+       triangle))))
 ;;Problem 20
 (defn problem20 []
   (-> (reduce * (BigInteger/valueOf 2) (range 3 101))
