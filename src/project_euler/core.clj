@@ -346,19 +346,47 @@
          (range 1 28123))))
 
 ;;Problem 24
-(def fac
-  (memoize #(reduce *' (range 1 (inc %)))))
 
-(defn problem24 []
-  (reduce str
-    (loop [n 1000000
-           i 9
-           acc []]
-      (if (= 10 (count acc))
-        acc
-        (recur (mod n (fac i))
-          (dec i)
-          (conj acc (quot n (fac i))))))))
+(defn swap
+  "swap two values at the given indices in a vector"
+  [v i1 i2]
+  (assoc v i2 (v i1)
+        i1 (v i2)))
+
+(defn- longest-non-inc
+  "Find the longest non-increasing subvectors first index"
+  [set]
+  (loop [i (dec (count set))]
+    (if (and (> i 0)
+          (>= (nth set (dec i))
+            (nth set i)))
+      (recur (dec i))
+      i)))
+
+(defn- rightmost-exceeder
+  "Find the index of the first value greater than the value at index, starting from the end"
+  [set index]
+  (loop [i (dec (count set))]
+    (if (>= (nth set i)
+          (nth set index))
+      i
+      (recur (dec i)))))
+
+(defn next-perm
+  "The next lexicographic permutation"
+  [set]
+  (let [i (longest-non-inc set)
+        pivot (dec i)
+        j (rightmost-exceeder set pivot)
+        nset (swap set pivot j)]
+    (concat (subvec nset 0 i)
+          (reverse (subvec nset i)))))
+
+(defn problem24
+  ([] (problem24 [0 1 2 3 4 5 6 7 8 9]
+        1000000))
+  ([set n]
+   (apply str (second (take-nth n (iterate (comp vec next-perm) set))))))
 
 ;;Problem 25
 (defn problem25 []
