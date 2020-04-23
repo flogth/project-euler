@@ -382,3 +382,8 @@
             :when (and (primitive-root? 10 n)
                     (safe-prime n primes))]
         n))))
+
+;; Problem 67
+
+(defn problem67 []
+  (problem18 (parse-triangle-file "src/project_euler/67_triangle.txt")))
